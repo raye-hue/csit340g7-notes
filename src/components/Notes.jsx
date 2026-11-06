@@ -8,8 +8,19 @@ function Notes() {
   ])
   const [form, setForm] = useState({ title: '', body: '' })
 
-  function handleChange(e) {
+    function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    const title = form.title.trim()
+    const body = form.body.trim()
+    if (title === '' || body === '') {
+      return
+    }
+    setNotes([...notes, { id: crypto.randomUUID(), title, body }])
+    setForm({ title: '', body: '' })
   }
 
   return (
@@ -27,7 +38,7 @@ function Notes() {
           />
         </div>
 
-        <form className="grid gap-3">
+        <form onSubmit={handleSubmit} className="grid gap-3">
           <p className="text-[13px] font-normal tracking-wide text-[#949494]">NEW NOTE</p>
           <input
             name="title"
