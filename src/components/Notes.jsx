@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect} from 'react'
 import NoteCard from './NoteCard.jsx'
 
 function Notes() {
@@ -9,11 +9,15 @@ function Notes() {
   const [form, setForm] = useState({ title: '', body: '' })
   const [search, setSearch] = useState('')
 
+  useEffect(() => {
+    localStorage.setItem('notes', JSON.stringify(notes))
+  }, [notes])
+
   const visibleNotes = notes.filter((note) =>
     note.title.toLowerCase().includes(search.toLowerCase())
   )
 
-    function handleChange(e) {
+  function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
@@ -34,11 +38,11 @@ function Notes() {
 
   return (
     <div className="grid min-h-screen grid-cols-[420px_1fr]">
-        <aside className="sticky top-0 flex h-screen flex-col gap-5 bg-white px-8 py-9 shadow-[0_2px_4px_0_rgba(0,0,0,0.2),0_25px_50px_0_rgba(0,0,0,0.1)]">
+      <aside className="sticky top-0 flex h-screen flex-col gap-5 bg-white px-8 py-9 shadow-[0_2px_4px_0_rgba(0,0,0,0.2),0_25px_50px_0_rgba(0,0,0,0.1)]">
         <h1 className="text-[72px] leading-none font-extralight text-[#b83f45">
           notes
         </h1>
- 
+
         <div>
           <p className="mb-2 text-[13px] font-normal tracking-wide text-[#949494]">SEARCH</p>
           <input
@@ -77,30 +81,30 @@ function Notes() {
 
       <section className="px-12 py-11">
         <h2 className="mb-6 text-3xl">All notes</h2>
-         
+
         <ul className="grid grid-cols-3 items-start gap-5">
-        {visibleNotes.map((note) => (
+          {visibleNotes.map((note) => (
             <li
-            key={note.id}
-            className="relative min-h-32 bg-white px-6 py-5 shadow-[0_2px_4px_0_rgba(0,0,0,0.2),0_25px_50px_0_rgba(0,0,0,0.1)]"
+              key={note.id}
+              className="relative min-h-32 bg-white px-6 py-5 shadow-[0_2px_4px_0_rgba(0,0,0,0.2),0_25px_50px_0_rgba(0,0,0,0.1)]"
             >
-            <NoteCard title={note.title} body={note.body} />
-            <button
+              <NoteCard title={note.title} body={note.body} />
+              <button
                 type="button"
                 onClick={() => handleDelete(note.id)}
                 className="absolute top-4 right-5 ..."
-                >
+              >
                 ×
-            </button>
+              </button>
             </li>
-        ))}
-                </ul>
-                {visibleNotes.length === 0 && (
-                <p className="text-lg text-[#949494]">No notes found</p>
+          ))}
+        </ul>
+        {visibleNotes.length === 0 && (
+          <p className="text-lg text-[#949494]">No notes found</p>
         )}
       </section>
     </div>
   )
 }
- 
+
 export default Notes
