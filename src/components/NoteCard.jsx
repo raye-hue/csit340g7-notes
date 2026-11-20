@@ -1,7 +1,7 @@
-import { useState, useContext, memo} from 'react'
+import { useState, useContext, memo } from 'react'
 import { SettingsContext } from '../SettingsContext.js'
 
-function NoteCard({ id, title, body, onDelete}) {
+function NoteCard({ id, title, body, onDelete }) {
   const [open, setOpen] = useState(false)
   const { largeText } = useContext(SettingsContext)
 
@@ -32,7 +32,7 @@ function NoteCard({ id, title, body, onDelete}) {
         onClick={() => setOpen(!open)}
         className="mt-3 cursor-pointer text-[15px] font-normal text-[#b83f45] underline"
       >
-                {open ? 'Show less' : 'Show more'}
+        {open ? 'Show less' : 'Show more'}
       </button>
       <button
         type="button"
