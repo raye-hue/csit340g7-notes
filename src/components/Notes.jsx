@@ -54,7 +54,7 @@ function Notes() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-   async function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
     const title = form.title.trim()
     const body = form.body.trim()
@@ -80,8 +80,16 @@ function Notes() {
     }
   }
 
-  const handleDelete = useCallback((id) => {
-    setNotes(notes.filter((note) => note.id !== id))
+  const handleDelete = useCallback(async (id) => {
+    try {
+      const res = await fetch(API_URL + '/notes/' + id, { method: 'DELETE' })
+      if (!res.ok) {
+        throw new Error('The server answered ' + res.status)
+      }
+      setNotes(notes.filter((note) => note.id !== id))
+    } catch (err) {
+      setError(err.message)
+    }
   }, [notes])
 
   return (
